@@ -177,6 +177,19 @@ namespace Chess.Domain
             Assert.That(_pawn.YCoordinate, Is.EqualTo(2));
         }
 
+        /// <summary>
+        /// Adding this test to verify the Capture Movement
+        /// </summary>
+        [Test]
+        public void _21_making_an_legal_move_by_placing_the_white_pawn_on_X_equals_5_and_Y_equals_4_and_capturing_to_X_equals_6_and_Y_equals_5_should_move_the_pawn()
+        {
+            _chessBoard.Add(_pawn, 5, 4, PieceColor.White);
+            _pawn.Move(MovementType.Capture, 6, 5);
+            Assert.That(_pawn.XCoordinate, Is.EqualTo(6));
+            Assert.That(_pawn.YCoordinate, Is.EqualTo(5));
+        }
+
+
     }
 
 }

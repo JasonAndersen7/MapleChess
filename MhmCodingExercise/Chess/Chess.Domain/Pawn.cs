@@ -2,12 +2,11 @@
 
 namespace Chess.Domain
 {
-    public class Pawn : ChessPiece
+    public class Pawn : ChessPiece, IValidateMove
     {
         private ChessBoard _chessBoard;
-        private int _xCoordinate;
-        private int _yCoordinate;
-        private PieceColor _pieceColor;
+
+     
 
         public ChessBoard ChessBoard
         {
@@ -15,23 +14,7 @@ namespace Chess.Domain
             set { _chessBoard = value; }
         }
 
-        //public int XCoordinate
-        //{
-        //    get { return _xCoordinate; }
-        //    set { _xCoordinate = value; }
-        //}
-
-        //public int YCoordinate
-        //{
-        //    get { return _yCoordinate; }
-        //    set { _yCoordinate = value; }
-        //}
-
-        public PieceColor PieceColor
-        {
-            get { return _pieceColor; }
-            private set { _pieceColor = value; }
-        }
+      
 
         public Pawn(PieceColor pieceColor)
         {
@@ -65,18 +48,40 @@ namespace Chess.Domain
             //I am using the chessboard 
             if (_chessBoard.IsLegalBoardPosition(newX, newY))
             {
-                //verify that the x move is correct
-                if (!VerifyXMove(newX, this.XCoordinate))
-                {
-                    //don't do the move
-                    return;
-                }
 
-                //verify that the Y move is correct
-                if (!VerifyYMove(newY, this.YCoordinate))
+                //determine legal moves for move vs capture
+                switch (movementType)
                 {
-                    //don't do the move
-                    return;
+                    case MovementType.Move:
+                
+                    //verify that the x move is correct
+                    if (!VerifyXMove(newX))
+                    {
+                        //don't do the move
+                        return;
+                    }
+
+                    //verify that the Y move is correct
+                    if (!VerifyYMove(newY))
+                    {
+                        //don't do the move
+                        return;
+                    }
+                        break;
+
+                        //in this case Pawns can only move diagonly
+                    case MovementType.Capture:
+                        if(!VerifyDiagonalMove(newX, newY))
+                        {
+                            return;
+                        }
+
+                        break;
+                     default:
+
+
+                        break;     
+
                 }
 
                 this.XCoordinate = newX;
@@ -93,33 +98,22 @@ namespace Chess.Domain
             // throw new NotImplementedException("Need to implement Pawn.Move()");
         }
 
-        public override string ToString()
+        public bool VerifyXMove(int newX)
         {
-            return CurrentPositionAsString();
-        }
-
-        protected string CurrentPositionAsString()
-        {
-            return string.Format("Current X: {1}{0}Current Y: {2}{0}Piece Color: {3}", Environment.NewLine, XCoordinate, YCoordinate, PieceColor);
-        }
-
-        private bool VerifyXMove(int newX, int OldX)
-        {
-            if (newX < OldX)
+            if (!XMoveSideways(newX))
             {
-                //can't move backwards
                 return false;
             }
 
-            if ((newX - OldX) > 1)
+            if (!XMoveOnlyOne(newX)) 
             {
-                //the pawn can't jump 2 spaces
                 return false;
             }
+        
             return true;
         }
 
-        private bool VerifyYMove(int newY, int oldY)
+        public bool VerifyYMove(int newY)
         {
             //if (newY < oldY)
             //{
@@ -127,13 +121,67 @@ namespace Chess.Domain
             //    return false;
             //}
 
-            if ((newY - oldY) > 1)
+            if ((newY - YCoordinate) > 1)
             {
                 //the pawn can't jump 2 spaces
                 return false;
             }
             return true;
         }
+
+        /// <summary>
+        /// Should only be used by the Capture Movement, validates that the pawn is attacking diagonally
+        /// </summary>
+        /// <param name="newX"></param>
+        /// <returns></returns>
+        public bool VerifyDiagonalMove(int newX, int newY)
+        {
+            //verify that new x Coordinate is either 1 greater or 1 less than the current x position
+            if ((newX == (XCoordinate+1) || newX == (XCoordinate -1)))
+                {
+                    //verify that the new Y position is 1 greater than the current Y position
+                    if (newY == YCoordinate +1)
+                {
+                    return true;
+                }
+
+                }
+            return false;
+        }
+
+
+        /// <summary>
+        /// Verify that the Pawn cannot move sideways,
+        /// this should only be called by the Movement Capture type
+        /// </summary>
+        /// <param name="newX">new x position</param>
+        /// <param name="OldX">old x position</param>
+        /// <returns></returns>
+        private bool XMoveSideways (int newX)
+        {
+            if (newX != XCoordinate)
+            {
+                //can't move sideways
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Verify that the pawn only moves one space
+        /// </summary>
+        /// <param name="newX"></param>
+        /// <returns></returns>
+        private bool XMoveOnlyOne (int newX)
+        {
+            if ((newX - XCoordinate) > 1)
+            {
+                //the pawn can't jump 2 spaces
+                return false;
+            }
+            return true;
+        }
+
 
     }
 }

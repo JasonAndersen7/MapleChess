@@ -13,6 +13,7 @@ namespace Chess.Domain
 
         private int _xCoordinate;
         private int _yCoordinate;
+        protected PieceColor _pieceColor;
 
         public int XCoordinate
         {
@@ -23,8 +24,16 @@ namespace Chess.Domain
         public int YCoordinate
         {
             get { return _yCoordinate; }
+
             set { _yCoordinate = value; }
         }
+
+        public PieceColor PieceColor
+        {
+            get { return _pieceColor; }
+            private set { _pieceColor = value; }
+        }
+
 
         /// <summary>
         /// //provides the template for all chess pieces to move  
@@ -36,6 +45,16 @@ namespace Chess.Domain
         {
             this.XCoordinate = XCoordinate;
             this.YCoordinate = YCoordinate;
+        }
+
+        public override string ToString()
+        {
+            return CurrentPositionAsString();
+        }
+
+        protected string CurrentPositionAsString()
+        {
+            return string.Format("Current X: {1}{0}Current Y: {2}{0}Piece Color: {3}", Environment.NewLine, XCoordinate, YCoordinate, PieceColor);
         }
     }
 }
