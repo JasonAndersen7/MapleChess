@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+//using NUnit.Framework.SyntaxHelpers;
 
 namespace Chess.Domain
 {
@@ -86,7 +86,8 @@ namespace Chess.Domain
         public void SetUp()
         {
             _chessBoard = new ChessBoard();
-            _pawn = new Pawn(PieceColor.Black);
+            //_pawn = new Pawn(PieceColor.Black);
+            _pawn = new Pawn(PieceColor.Black, _chessBoard);
         }
 
         [Test]
@@ -98,7 +99,7 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _10_making_an_illegal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_eqauls_3_and_moving_to_X_equals_7_and_Y_eqauls_3_should_not_move_the_pawn()
+        public void _10_making_an_illegal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_equals_3_and_moving_to_X_equals_7_and_Y_equals_3_should_not_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 3, PieceColor.Black);
             _pawn.Move(MovementType.Move, 7, 3);
@@ -107,7 +108,7 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _11_making_an_illegal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_eqauls_3_and_moving_to_X_equals_4_and_Y_eqauls_3_should_not_move_the_pawn()
+        public void _11_making_an_illegal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_equals_3_and_moving_to_X_equals_4_and_Y_equals_3_should_not_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 3, PieceColor.Black);
             _pawn.Move(MovementType.Move, 4, 3);
@@ -116,9 +117,10 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _20_making_a_legal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_eqauls_3_and_moving_to_X_equals_6_and_Y_eqauls_2_should_move_the_pawn()
+        public void _20_making_a_legal_move_by_placing_the_black_pawn_on_X_equals_6_and_Y_equals_3_and_moving_to_X_equals_6_and_Y_equals_2_should_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 3, PieceColor.Black);
+            
             _pawn.Move(MovementType.Move, 6, 2);
             Assert.That(_pawn.XCoordinate, Is.EqualTo(6));
             Assert.That(_pawn.YCoordinate, Is.EqualTo(2));
@@ -136,7 +138,8 @@ namespace Chess.Domain
         public void SetUp()
         {
             _chessBoard = new ChessBoard();
-            _pawn = new Pawn(PieceColor.White);
+            //_pawn = new Pawn(PieceColor.White);
+            _pawn = new Pawn(PieceColor.White, _chessBoard);
         }
 
         [Test]
@@ -148,7 +151,7 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _10_making_an_illegal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_eqauls_1_and_moving_to_X_equals_7_and_Y_eqauls_2_should_not_move_the_pawn()
+        public void _10_making_an_illegal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_equals_1_and_moving_to_X_equals_7_and_Y_equals_2_should_not_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 1, PieceColor.White);
             _pawn.Move(MovementType.Move, 7, 2);
@@ -157,7 +160,7 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _11_making_an_illegal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_eqauls_1_and_moving_to_X_equals_6_and_Y_eqauls_4_should_not_move_the_pawn()
+        public void _11_making_an_illegal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_equals_1_and_moving_to_X_equals_6_and_Y_equals_4_should_not_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 1, PieceColor.White);
             _pawn.Move(MovementType.Move, 6, 4);
@@ -166,7 +169,7 @@ namespace Chess.Domain
         }
 
         [Test]
-        public void _20_making_a_legal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_eqauls_1_and_moving_to_X_equals_6_and_Y_eqauls_2_should_move_the_pawn()
+        public void _20_making_a_legal_move_by_placing_the_white_pawn_on_X_equals_6_and_Y_equals_1_and_moving_to_X_equals_6_and_Y_equals_2_should_move_the_pawn()
         {
             _chessBoard.Add(_pawn, 6, 1, PieceColor.White);
             _pawn.Move(MovementType.Move, 6, 2);
