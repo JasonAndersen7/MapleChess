@@ -6,7 +6,7 @@ namespace Chess.Domain
     {
         private ChessBoard _chessBoard;
 
-     
+
 
         public ChessBoard ChessBoard
         {
@@ -14,7 +14,7 @@ namespace Chess.Domain
             set { _chessBoard = value; }
         }
 
-      
+
 
         public Pawn(PieceColor pieceColor)
         {
@@ -45,7 +45,8 @@ namespace Chess.Domain
         public override void Move(MovementType movementType, int newX, int newY)
         {
             //first determine if the new position is valid
-            //I am using the chessboard 
+            //I am using the chessboard method to determine if the new X and Y are located on the 
+            //chess board
             if (_chessBoard.IsLegalBoardPosition(newX, newY))
             {
 
@@ -53,34 +54,34 @@ namespace Chess.Domain
                 switch (movementType)
                 {
                     case MovementType.Move:
-                
-                    //verify that the x move is correct
-                    if (!VerifyXMove(newX))
-                    {
-                        //don't do the move
-                        return;
-                    }
 
-                    //verify that the Y move is correct
-                    if (!VerifyYMove(newY))
-                    {
-                        //don't do the move
-                        return;
-                    }
+                        //verify that the x move is correct
+                        if (!VerifyXMove(newX))
+                        {
+                            //don't do the move
+                            return;
+                        }
+
+                        //verify that the Y move is correct
+                        if (!VerifyYMove(newY))
+                        {
+                            //don't do the move
+                            return;
+                        }
                         break;
 
-                        //in this case Pawns can only move diagonly
+                    //in this case Pawns can only move diagonally
                     case MovementType.Capture:
-                        if(!VerifyDiagonalMove(newX, newY))
+                        if (!VerifyDiagonalMove(newX, newY))
                         {
                             return;
                         }
 
                         break;
-                     default:
+                    default:
 
 
-                        break;     
+                        break;
 
                 }
 
@@ -105,11 +106,11 @@ namespace Chess.Domain
                 return false;
             }
 
-            if (!XMoveOnlyOne(newX)) 
+            if (!XMoveOnlyOne(newX))
             {
                 return false;
             }
-        
+
             return true;
         }
 
@@ -137,15 +138,15 @@ namespace Chess.Domain
         public bool VerifyDiagonalMove(int newX, int newY)
         {
             //verify that new x Coordinate is either 1 greater or 1 less than the current x position
-            if ((newX == (XCoordinate+1) || newX == (XCoordinate -1)))
-                {
-                    //verify that the new Y position is 1 greater than the current Y position
-                    if (newY == YCoordinate +1)
+            if ((newX == (XCoordinate + 1) || newX == (XCoordinate - 1)))
+            {
+                //verify that the new Y position is 1 greater than the current Y position
+                if (newY == YCoordinate + 1)
                 {
                     return true;
                 }
 
-                }
+            }
             return false;
         }
 
@@ -157,7 +158,7 @@ namespace Chess.Domain
         /// <param name="newX">new x position</param>
         /// <param name="OldX">old x position</param>
         /// <returns></returns>
-        private bool XMoveSideways (int newX)
+        private bool XMoveSideways(int newX)
         {
             if (newX != XCoordinate)
             {
@@ -172,7 +173,7 @@ namespace Chess.Domain
         /// </summary>
         /// <param name="newX"></param>
         /// <returns></returns>
-        private bool XMoveOnlyOne (int newX)
+        private bool XMoveOnlyOne(int newX)
         {
             if ((newX - XCoordinate) > 1)
             {
