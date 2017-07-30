@@ -1,4 +1,5 @@
 ﻿using System;
+using ChessDomain;
 
 namespace Chess.Domain
 {
@@ -58,6 +59,7 @@ namespace Chess.Domain
                         //verify that the x move is correct
                         if (!VerifyXMove(newX))
                         {
+                            Logger.LogMessage("the new x coordinate is incorrect " + newX, ChessDomain.LogLevel.info);
                             //don't do the move
                             return;
                         }
@@ -65,6 +67,7 @@ namespace Chess.Domain
                         //verify that the Y move is correct
                         if (!VerifyYMove(newY))
                         {
+                            Logger.LogMessage("the new y coordinate is incorrect " + newY, ChessDomain.LogLevel.info);
                             //don't do the move
                             return;
                         }
