@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace Chess.Domain
 {
     public class ChessBoard
@@ -30,6 +31,7 @@ namespace Chess.Domain
 
         public bool IsLegalBoardPosition(int xCoordinate, int yCoordinate)
         {
+            Logger.LogMessage("Validating x coordinate of " + xCoordinate + " and y coordinate of " + yCoordinate,LogLevel.info);
             //set true as the default value
             //this will force the method to validate all potential future cases
             bool result = true;

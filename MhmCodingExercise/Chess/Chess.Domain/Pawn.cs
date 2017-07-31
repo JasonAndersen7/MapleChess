@@ -1,5 +1,5 @@
 ﻿using System;
-using ChessDomain;
+
 
 namespace Chess.Domain
 {
@@ -45,61 +45,67 @@ namespace Chess.Domain
         /// <param name="newY"></param>
         public override void Move(MovementType movementType, int newX, int newY)
         {
-            //first determine if the new position is valid
-            //I am using the chessboard method to determine if the new X and Y are located on the 
-            //chess board
-            if (_chessBoard.IsLegalBoardPosition(newX, newY))
-            {
+            Logger.LogMessage(string.Format("Pawn at current location of {0},{1} is doing a movement type of {2} to {3},{4}", XCoordinate, YCoordinate, movementType.ToString(), newX, newY), LogLevel.info);
 
-                //determine legal moves for move vs capture
-                switch (movementType)
+            try
+            {
+                //first determine if the new position is valid
+                //I am using the chessboard method to determine if the new X and Y are located on the 
+                //chess board
+                if (_chessBoard.IsLegalBoardPosition(newX, newY))
                 {
-                    case MovementType.Move:
 
-                        //verify that the x move is correct
-                        if (!VerifyXMove(newX))
-                        {
-                            Logger.LogMessage("the new x coordinate is incorrect " + newX, ChessDomain.LogLevel.info);
-                            //don't do the move
-                            return;
-                        }
+                    //determine legal moves for move vs capture
+                    switch (movementType)
+                    {
+                        case MovementType.Move:
 
-                        //verify that the Y move is correct
-                        if (!VerifyYMove(newY))
-                        {
-                            Logger.LogMessage("the new y coordinate is incorrect " + newY, ChessDomain.LogLevel.info);
-                            //don't do the move
-                            return;
-                        }
-                        break;
+                            //verify that the x move is correct
+                            if (!VerifyXMove(newX))
+                            {
+                                Logger.LogMessage("the new x coordinate is incorrect " + newX, LogLevel.error);
+                                //don't do the move
+                                return;
+                            }
 
-                    //in this case Pawns can only move diagonally
-                    case MovementType.Capture:
-                        if (!VerifyDiagonalMove(newX, newY))
-                        {
-                            return;
-                        }
+                            //verify that the Y move is correct
+                            if (!VerifyYMove(newY))
+                            {
+                                Logger.LogMessage("the new y coordinate is incorrect " + newY, LogLevel.error);
+                                //don't do the move
+                                return;
+                            }
+                            break;
 
-                        break;
-                    default:
+                        //in this case Pawns can only move diagonally
+                        case MovementType.Capture:
+                            if (!VerifyDiagonalMove(newX, newY))
+                            {
+                                Logger.LogMessage("the new x  " + newX + " or y coordinate is incorrect " + newY, LogLevel.error);
+                                return;
+                            }
 
+                            break;
+                        default:
 
-                        break;
+                            break;
+                    }
 
+                    this.XCoordinate = newX;
+                    this.YCoordinate = newY;
+
+                    _chessBoard.Add(this, this.XCoordinate, this.YCoordinate, this.PieceColor);
                 }
-
-                this.XCoordinate = newX;
-                this.YCoordinate = newY;
-
-
-                _chessBoard.Add(this, this.XCoordinate, this.YCoordinate, this.PieceColor);
+                else
+                {
+                    string result = string.Format("Not an acceptable move X: {0} Y: {1}", newX, newY);
+                    Logger.LogMessage(result, LogLevel.error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                string result = string.Format("Not an acceptable move X: {0} Y: {1}", newX, newY);
+                Logger.LogMessage("An exception occurred" + ex.Message, LogLevel.error);
             }
-
-            // throw new NotImplementedException("Need to implement Pawn.Move()");
         }
 
         public bool VerifyXMove(int newX)
