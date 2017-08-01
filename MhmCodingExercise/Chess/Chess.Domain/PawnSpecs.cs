@@ -209,10 +209,9 @@ namespace Chess.Domain
             _chessBoard.Add(_pawn, 5, 1, PieceColor.White);
             _pawn.Move(MovementType.Special, 5, 4);
             Assert.That(_pawn.XCoordinate, Is.EqualTo(5));
-            Assert.That(_pawn.YCoordinate, Is.EqualTo(3));
+            Assert.That(_pawn.YCoordinate, Is.EqualTo(1));
         }
-
-
+        
     }
 
 }
