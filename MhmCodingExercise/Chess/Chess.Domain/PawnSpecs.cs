@@ -189,6 +189,29 @@ namespace Chess.Domain
             Assert.That(_pawn.YCoordinate, Is.EqualTo(5));
         }
 
+        /// <summary>
+        /// Adding this test to verify the Special Movement
+        /// </summary>
+        [Test]
+        public void _21_making_an_legal_move_by_placing_the_white_pawn_on_X_equals_5_and_Y_equals_1_and_special_move_to_X_equals_5_and_Y_equals_3_should_move_the_pawn()
+        {
+            _chessBoard.Add(_pawn, 5, 1, PieceColor.White);
+            _pawn.Move(MovementType.Special, 5, 3);
+            Assert.That(_pawn.XCoordinate, Is.EqualTo(5));
+            Assert.That(_pawn.YCoordinate, Is.EqualTo(3));
+        }
+
+        /// Adding this test to verify the Special Movement
+        /// </summary>
+        [Test]
+        public void _21_making_an_illegal_move_by_placing_the_white_pawn_on_X_equals_5_and_Y_equals_1_and_special_move_to_X_equals_5_and_Y_equals_4_should__not_move_the_pawn()
+        {
+            _chessBoard.Add(_pawn, 5, 1, PieceColor.White);
+            _pawn.Move(MovementType.Special, 5, 4);
+            Assert.That(_pawn.XCoordinate, Is.EqualTo(5));
+            Assert.That(_pawn.YCoordinate, Is.EqualTo(3));
+        }
+
 
     }
 
