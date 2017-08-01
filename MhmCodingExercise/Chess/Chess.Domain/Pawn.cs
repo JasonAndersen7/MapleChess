@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Text;
 
 namespace Chess.Domain
 {
@@ -45,7 +45,7 @@ namespace Chess.Domain
         /// <param name="newY"></param>
         public override void Move(MovementType movementType, int newX, int newY)
         {
-            Logger.LogMessage(string.Format("Pawn at current location of {0},{1} is doing a movement type of {2} to {3},{4}", XCoordinate, YCoordinate, movementType.ToString(), newX, newY), LogLevel.info);
+            Logger.LogMessage(string.Format("Pawn at current location of {0},{1} is doing a movement type of {2} to {3}, {4}", XCoordinate, YCoordinate, movementType.ToString(), newX, newY), LogLevel.info);
 
             try
             {
@@ -84,7 +84,14 @@ namespace Chess.Domain
                                 Logger.LogMessage("the new x  " + newX + " or y coordinate is incorrect " + newY, LogLevel.error);
                                 return;
                             }
+                            break;
 
+                        case MovementType.Special:
+                            if(!VerifySpecialMove(newX, newY))
+                            {
+                                Logger.LogMessage("the new x  " + newX + " or y coordinate is incorrect " + newY, LogLevel.error);
+                                return;
+                            }
                             break;
                         default:
 
@@ -159,6 +166,40 @@ namespace Chess.Domain
             return false;
         }
 
+        /// <summary>
+        /// Verifies Pawns Special moves, like en passant, or the first move where they 
+        /// can jump two spaces
+        /// </summary>
+        /// <param name="newX"></param>
+        /// <param name="newY"></param>
+        /// <returns></returns>
+        public bool VerifySpecialMove(int newX, int newY)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendFormat("Verifying special move X: {0} Y: {1}", newX, newY);
+            bool result = true;
+
+            //check first if it is the pawns beginning position
+            if (YCoordinate == 1)
+            {
+                if (newY == YCoordinate+2)
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            else
+            {
+                result = false;
+            }
+
+            //TODO figure out how to do the move for en passant.
+
+            return result;
+        }
 
         /// <summary>
         /// Verify that the Pawn cannot move sideways,
